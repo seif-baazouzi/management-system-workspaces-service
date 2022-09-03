@@ -7,17 +7,18 @@ def testToken():
     return res.equals({ "message": "invalid-token" })
 
 def testEmptyFields():
-    res = testRoute(PUT, f"{config.server}/api/v1/workspaces/uuid", headers={ "X-Token": config.token })
+    _, workspaceID = utils.createRandomWorkspace()
+    res = testRoute(PUT, f"{config.server}/api/v1/workspaces/{workspaceID}", headers={ "X-Token": config.token })
     return res.equals({ "workspace": "Must not be empty" })
 
 def testNotExistingParentWorkspace():
-    randomWorkspace, _ = utils.createRandomWorkspace()
+    randomWorkspace, workspaceID = utils.createRandomWorkspace()
     
     workspace = utils.randomString(10)
     parentWorkspace = utils.genUUID()
     body = { "workspace": workspace, "parentWorkspace": parentWorkspace }
 
-    res = testRoute(PUT, f"{config.server}/api/v1/workspaces/uuid", headers={ "X-Token": config.token }, body=body)
+    res = testRoute(PUT, f"{config.server}/api/v1/workspaces/{workspaceID}", headers={ "X-Token": config.token }, body=body)
 
     return res.equals({ "parentWorkspace": "This workspace does not exist"})
 

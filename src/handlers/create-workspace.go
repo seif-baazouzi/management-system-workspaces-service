@@ -28,7 +28,7 @@ func CreateWorkspace(c *fiber.Ctx) error {
 
 	// check if parent
 	if body.ParentWorkspace != uuid.Nil {
-		isExit, err := models.IsWorkspaceExist(body.ParentWorkspace)
+		isExit, err := models.IsWorkspaceExist(body.ParentWorkspace.String())
 
 		if err != nil {
 			return utils.ServerError(c, err)

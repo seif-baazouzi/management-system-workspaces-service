@@ -33,11 +33,11 @@ func GetWorkspaces(userID string) ([]Workspace, error) {
 	return workspaces, nil
 }
 
-func IsWorkspaceExist(workspaceID uuid.UUID) (bool, error) {
+func IsWorkspaceExist(workspaceID string) (bool, error) {
 	conn := db.GetPool()
 	defer db.ClosePool(conn)
 
-	rows, err := conn.Query("SELECT 1 FROM workspaces WHERE workspaceID = $1", workspaceID.String())
+	rows, err := conn.Query("SELECT 1 FROM workspaces WHERE workspaceID = $1", workspaceID)
 
 	if err != nil {
 		return false, err
@@ -71,4 +71,23 @@ func CreateWorkspace(workspace WorkspaceBody, userID string) (string, error) {
 	}
 
 	return workspaceID.String(), nil
+}
+
+func UpdateWorkspace(workspace WorkspaceBody, workspaceID string, userID string) error {
+	conn := db.GetPool()
+	defer db.ClosePool(conn)
+
+	_, err := conn.Exec(
+		"UPDATE workspaces SET workspace = $1, parentWorkspace = $2 WHERE userID = $3 AND workspaceID = $4",
+		workspace.Workspace,
+		workspace.ParentWorkspace,
+		userID,
+		workspaceID,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
