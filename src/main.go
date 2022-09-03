@@ -23,6 +23,7 @@ func main() {
 	}))
 
 	app.Get("/api/v1/workspaces", auth.IsLogin, handlers.GetWorkspaces)
+	app.Post("/api/v1/workspaces", auth.IsLogin, handlers.CreateWorkspace)
 
 	app.Listen(":3000")
 }
