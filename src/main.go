@@ -1,7 +1,9 @@
 package main
 
 import (
+	"workspaces-service/src/auth"
 	"workspaces-service/src/db"
+	"workspaces-service/src/handlers"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -19,6 +21,8 @@ func main() {
 	app.Use(logger.New(logger.Config{
 		Format: "[${ip}]:${port} ${status} - ${method} ${path}\n",
 	}))
+
+	app.Get("/api/v1/workspaces", auth.IsLogin, handlers.GetWorkspaces)
 
 	app.Listen(":3000")
 }
