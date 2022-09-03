@@ -91,3 +91,20 @@ func UpdateWorkspace(workspace WorkspaceBody, workspaceID string, userID string)
 
 	return nil
 }
+
+func DeleteWorkspace(workspaceID string, userID string) error {
+	conn := db.GetPool()
+	defer db.ClosePool(conn)
+
+	_, err := conn.Exec(
+		"DELETE FROM workspaces WHERE userID = $1 AND workspaceID = $2",
+		userID,
+		workspaceID,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
