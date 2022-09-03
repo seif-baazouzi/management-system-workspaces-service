@@ -2,6 +2,8 @@ package models
 
 import (
 	"workspaces-service/src/db"
+
+	"github.com/google/uuid"
 )
 
 func GetWorkspaces(userID string) ([]Workspace, error) {
@@ -29,4 +31,44 @@ func GetWorkspaces(userID string) ([]Workspace, error) {
 	}
 
 	return workspaces, nil
+}
+
+func IsWorkspaceExist(workspaceID uuid.UUID) (bool, error) {
+	conn := db.GetPool()
+	defer db.ClosePool(conn)
+
+	rows, err := conn.Query("SELECT 1 FROM workspaces WHERE workspaceID = $1", workspaceID.String())
+
+	if err != nil {
+		return false, err
+	}
+
+	defer rows.Close()
+
+	if rows.Next() {
+		return true, nil
+	}
+
+	return false, nil
+}
+
+func CreateWorkspace(workspace WorkspaceBody, userID string) (string, error) {
+	conn := db.GetPool()
+	defer db.ClosePool(conn)
+
+	workspaceID := uuid.New()
+
+	_, err := conn.Exec(
+		"INSERT INTO workspaces (workspaceID, workspace, userID, parentWorkspace) VALUES ($1, $2, $3, $4)",
+		workspaceID,
+		workspace.Workspace,
+		userID,
+		workspace.ParentWorkspace,
+	)
+
+	if err != nil {
+		return "", err
+	}
+
+	return workspaceID.String(), nil
 }

@@ -8,7 +8,7 @@ def testToken():
 
 def testEmptyFields():
     res = testRoute(POST, f"{config.server}/api/v1/workspaces", headers={ "X-Token": config.token })
-    return res.equals({ "workspace": "Must not be empty", "parentWorkspace": "Must not be empty" })
+    return res.equals({ "workspace": "Must not be empty" })
 
 def testNotExistingParentWorkspace():
     randomWorkspace, _ = utils.createRandomWorkspace()
@@ -30,10 +30,10 @@ def testCreateWorkspaceNullParentWorkspace():
     return res.equals({ "message": "success"})
 
 def testCreateWorkspace():
-    _, parentWorkspace = utils.createRandomWorkspace()
+    _, workspaceID = utils.createRandomWorkspace()
 
     workspace = utils.randomString(10)
-    body = { "workspace": workspace, "parentWorkspace": parentWorkspace }
+    body = { "workspace": workspace, "parentWorkspace": workspaceID }
 
     res = testRoute(POST, f"{config.server}/api/v1/workspaces", headers={ "X-Token": config.token }, body=body)
 

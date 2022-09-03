@@ -13,3 +13,8 @@ type Workspace struct {
 	ParentWorkspace uuid.UUID `json:"parentWorkspace"`
 	CreatedAt       time.Time `json:"createdAt"`
 }
+
+type WorkspaceBody struct {
+	Workspace       string    `json:"Workspace"`
+	ParentWorkspace uuid.UUID `json:"parentWorkspace"`
+}
