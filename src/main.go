@@ -25,6 +25,7 @@ func main() {
 	app.Get("/api/v1/workspaces", auth.IsLogin, handlers.GetWorkspaces)
 	app.Post("/api/v1/workspaces", auth.IsLogin, handlers.CreateWorkspace)
 	app.Put("/api/v1/workspaces/:workspaceID", auth.IsLogin, handlers.UpdateWorkspace)
+	app.Delete("/api/v1/workspaces/:workspaceID", auth.IsLogin, handlers.DeleteWorkspace)
 
 	app.Listen(":3000")
 }
