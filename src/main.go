@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"os"
 	"workspaces-service/src/auth"
 	"workspaces-service/src/db"
 	"workspaces-service/src/handlers"
@@ -27,5 +29,5 @@ func main() {
 	app.Put("/api/v1/workspaces/:workspaceID", auth.IsLogin, handlers.UpdateWorkspace)
 	app.Delete("/api/v1/workspaces/:workspaceID", auth.IsLogin, handlers.DeleteWorkspace)
 
-	app.Listen(":3000")
+	app.Listen(fmt.Sprintf(":%s", os.Getenv("PORT")))
 }
