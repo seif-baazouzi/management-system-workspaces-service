@@ -4,7 +4,7 @@ services:
   api:
     build: .
     ports:
-      - 3000:3000
+      - 3001:3000
     depends_on:
       - db
     environment:
@@ -14,7 +14,8 @@ services:
       DB_NAME: "workspaces"
       JWT_SECRET: "JWT_SECRET"
       PORT: "3000"    
-  
+      ACCOUNTS_SERVICE: "http://127.0.0.1:3000"
+
   db:
     build: database
     environment:

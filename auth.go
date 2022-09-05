@@ -2,8 +2,10 @@ package auth
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"time"
 
 	"workspaces-service/src/utils"
@@ -14,7 +16,7 @@ import (
 func IsLogin(c *fiber.Ctx) error {
 	conn := http.Client{Timeout: time.Duration(3) * time.Second}
 
-	req, err := http.NewRequest("GET", "http://127.0.0.1:3000/api/v1/user", nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v1/user", os.Getenv("ACCOUNTS_SERVICE")), nil)
 	if err != nil {
 		return utils.ServerError(c, err)
 	}
