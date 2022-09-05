@@ -4,3 +4,5 @@ LICENSE
 README.md
 Dockerfile
 .dockerignore
+database/
+docker-compose.yml

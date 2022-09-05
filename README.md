@@ -10,6 +10,8 @@ This is the workspaces service for my management system.
 
 # Quick Start
 
+Started Manually
+
 ```console
 $ export DB_USER="postgres"
 $ export DB_PASSWORD="password"
@@ -18,6 +20,12 @@ $ export DB_NAME="workspaces"
 $ export JWT_SECRET="JWT_SECRET" # Must be the same as the accounts service
 
 $ go run ./src/main.go
+```
+
+Using Docker-compose
+
+```
+$ docker-compose up --build
 ```
 
 # Documentation
