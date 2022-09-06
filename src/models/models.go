@@ -8,7 +8,7 @@ import (
 
 type Workspace struct {
 	WorkspaceID     uuid.UUID `json:"workspaceID"`
-	Workspace       string    `json:"Workspace"`
+	Workspace       string    `json:"workspace"`
 	UserID          uuid.UUID `json:"userID"`
 	ParentWorkspace uuid.UUID `json:"parentWorkspace"`
 	CreatedAt       time.Time `json:"createdAt"`
