@@ -8,15 +8,16 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func GetWorkspaces(c *fiber.Ctx) error {
+func GetSingleWorkspace(c *fiber.Ctx) error {
 	uuid := fmt.Sprintf("%s", c.Locals("uuid"))
+	workspaceID := c.Params("workspaceID")
 
-	// get workspaces
-	workspaces, err := models.GetWorkspaces(uuid)
+	// get workspace
+	workspace, err := models.GetSingleWorkspace(uuid, workspaceID)
 
 	if err != nil {
 		return utils.ServerError(c, err)
 	}
 
-	return c.JSON(fiber.Map{"workspaces": workspaces})
+	return c.JSON(fiber.Map{"workspace": workspace})
 }

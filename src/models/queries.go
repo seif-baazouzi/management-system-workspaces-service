@@ -33,6 +33,32 @@ func GetWorkspaces(userID string) ([]Workspace, error) {
 	return workspaces, nil
 }
 
+func GetSingleWorkspace(userID string, workspaceID string) (Workspace, error) {
+	conn := db.GetPool()
+	defer db.ClosePool(conn)
+
+	var workspace Workspace
+
+	rows, err := conn.Query(
+		"SELECT workspaceID, workspace, userID, parentWorkspace, createdAt FROM workspaces WHERE userID = $1 AND workspaceID = $2",
+		userID,
+		workspaceID,
+	)
+
+	if err != nil {
+		return workspace, err
+	}
+
+	defer rows.Close()
+
+	if rows.Next() {
+		rows.Scan(&workspace.WorkspaceID, &workspace.Workspace, &workspace.UserID, &workspace.ParentWorkspace, &workspace.CreatedAt)
+		return workspace, nil
+	} else {
+		return workspace, nil
+	}
+}
+
 func IsWorkspaceExist(workspaceID string) (bool, error) {
 	conn := db.GetPool()
 	defer db.ClosePool(conn)
