@@ -2,7 +2,7 @@
 
 Used to update an existing workspace.
 
-**URL**: `/api/v1/workspaces/workspaceID`
+**URL**: `/api/v1/workspaces/:workspaceID`
 
 **Method**: `PUT`
 
