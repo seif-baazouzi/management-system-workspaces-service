@@ -15,9 +15,10 @@ Started Manually
 ```console
 $ export DB_USER="postgres"
 $ export DB_PASSWORD="password"
-$ export DB_HOST="172.17.0.1"
+$ export DB_HOST="127.0.0.1"
 $ export DB_NAME="workspaces"
-$ export JWT_SECRET="JWT_SECRET" # Must be the same as the accounts service
+$ export PORT="3001"
+$ export ACCOUNTS_SERVICE="http://127.0.0.1:3000"
 
 $ go run ./src/main.go
 ```
