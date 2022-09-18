@@ -13,7 +13,7 @@ func GetWorkspaces(userID string) ([]Workspace, error) {
 	var workspaces []Workspace
 
 	rows, err := conn.Query(
-		"SELECT workspaceID, workspace, userID, parentWorkspace, createdAt FROM workspaces WHERE userID = $1",
+		"SELECT workspaceID, workspace, userID, parentWorkspace, createdAt FROM workspaces WHERE userID = $1 ORDER BY createdAt",
 		userID,
 	)
 
