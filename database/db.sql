@@ -5,6 +5,7 @@ CREATE DATABASE workspaces;
 CREATE TABLE workspaces (
     workspaceID UUID PRIMARY KEY,
     workspace VARCHAR NOT NULL, 
+    icon VARCHAR NOT NULL, 
     userID UUID NOT NULL,
     parentWorkspace UUID,
     createdAt TIMESTAMP DEFAULT NOW() 
