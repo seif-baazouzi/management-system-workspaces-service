@@ -13,7 +13,7 @@ func GetWorkspaces(userID string) ([]Workspace, error) {
 	var workspaces []Workspace
 
 	rows, err := conn.Query(
-		"SELECT workspaceID, workspace, userID, parentWorkspace, createdAt FROM workspaces WHERE userID = $1 ORDER BY createdAt",
+		"SELECT workspaceID, workspace, icon, userID, parentWorkspace, createdAt FROM workspaces WHERE userID = $1 ORDER BY createdAt",
 		userID,
 	)
 
@@ -25,7 +25,7 @@ func GetWorkspaces(userID string) ([]Workspace, error) {
 
 	for rows.Next() {
 		var workspace Workspace
-		rows.Scan(&workspace.WorkspaceID, &workspace.Workspace, &workspace.UserID, &workspace.ParentWorkspace, &workspace.CreatedAt)
+		rows.Scan(&workspace.WorkspaceID, &workspace.Workspace, &workspace.Icon, &workspace.UserID, &workspace.ParentWorkspace, &workspace.CreatedAt)
 
 		workspaces = append(workspaces, workspace)
 	}
@@ -40,7 +40,7 @@ func GetSingleWorkspace(userID string, workspaceID string) (Workspace, bool, err
 	var workspace Workspace
 
 	rows, err := conn.Query(
-		"SELECT workspaceID, workspace, userID, parentWorkspace, createdAt FROM workspaces WHERE userID = $1 AND workspaceID = $2",
+		"SELECT workspaceID, workspace, icon, userID, parentWorkspace, createdAt FROM workspaces WHERE userID = $1 AND workspaceID = $2",
 		userID,
 		workspaceID,
 	)
@@ -52,7 +52,7 @@ func GetSingleWorkspace(userID string, workspaceID string) (Workspace, bool, err
 	defer rows.Close()
 
 	if rows.Next() {
-		rows.Scan(&workspace.WorkspaceID, &workspace.Workspace, &workspace.UserID, &workspace.ParentWorkspace, &workspace.CreatedAt)
+		rows.Scan(&workspace.WorkspaceID, &workspace.Workspace, &workspace.Icon, &workspace.UserID, &workspace.ParentWorkspace, &workspace.CreatedAt)
 		return workspace, true, nil
 	} else {
 		return workspace, false, nil
@@ -85,9 +85,10 @@ func CreateWorkspace(workspace WorkspaceBody, userID string) (string, error) {
 	workspaceID := uuid.New()
 
 	_, err := conn.Exec(
-		"INSERT INTO workspaces (workspaceID, workspace, userID, parentWorkspace) VALUES ($1, $2, $3, $4)",
+		"INSERT INTO workspaces (workspaceID, workspace, icon, userID, parentWorkspace) VALUES ($1, $2, $3, $4, $5)",
 		workspaceID,
 		workspace.Workspace,
+		workspace.Icon,
 		userID,
 		workspace.ParentWorkspace,
 	)
@@ -104,8 +105,9 @@ func UpdateWorkspace(workspace WorkspaceBody, workspaceID string, userID string)
 	defer db.ClosePool(conn)
 
 	_, err := conn.Exec(
-		"UPDATE workspaces SET workspace = $1, parentWorkspace = $2 WHERE userID = $3 AND workspaceID = $4",
+		"UPDATE workspaces SET workspace = $1, icon = $2, parentWorkspace = $3 WHERE userID = $4 AND workspaceID = $5",
 		workspace.Workspace,
+		workspace.Icon,
 		workspace.ParentWorkspace,
 		userID,
 		workspaceID,
